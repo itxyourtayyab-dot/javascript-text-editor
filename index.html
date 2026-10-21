@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JavaScript Text Editor Assignment</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f0f4f8;
+            margin: 0;
+            padding: 30px 15px;
+            color: #222;
+            transition: 0.3s;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: auto;
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.10);
+        }
+
+        h1 {
+            text-align: center;
+            color: #155eef;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 25px;
+        }
+
+        .toolbar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        button {
+            border: none;
+            padding: 10px 15px;
+            border-radius: 7px;
+            background: #155eef;
+            color: white;
+            cursor: pointer;
+            font-size: 14px;
+            transition: 0.2s;
+        }
+
+        button:hover {
+            background: #0b3eaa;
+            transform: translateY(-1px);
+        }
+
+        .editor {
+            min-height: 220px;
+            padding: 25px;
+            border: 2px solid #d0d5dd;
+            border-radius: 10px;
+            background: #ffffff;
+            color: #222222;
+            font-size: 20px;
+            line-height: 1.7;
+            overflow-wrap: anywhere;
+            transition: 0.3s;
+        }
+
+        .editor:focus {
+            outline: 2px solid #84adff;
+            border-color: #155eef;
+        }
+
+        .section-title {
+            font-size: 17px;
+            font-weight: bold;
+            margin: 22px 0 12px;
+        }
+
+        .color-button {
+            min-width: 85px;
+        }
+
+        .red { background: #d92d20; }
+        .green { background: #039855; }
+        .purple { background: #7a35c1; }
+        .orange { background: #dc6803; }
+
+        .reset {
+            background: #475467;
+        }
+
+        .dark-mode {
+            background: #101828;
+            color: #f2f4f7;
+        }
+
+        .dark-mode .container {
+            background: #1d2939;
+        }
+
+        .dark-mode .subtitle {
+            color: #d0d5dd;
+        }
+
+        .dark-mode .editor {
+            background: #344054;
+            color: #ffffff;
+            border-color: #667085;
+        }
+
+        .dark-mode h1 {
+            color: #84adff;
+        }
+
+        .status {
+            margin-top: 15px;
+            color: #039855;
+            font-size: 14px;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 18px;
+            }
+
+            button {
+                flex-grow: 1;
+            }
+
+            .editor {
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>JavaScript Text Editor</h1>
+
+    <p class="subtitle">
+        Interactive Webpage Using JavaScript Events and DOM Manipulation
+    </p>
+
+    <div class="section-title">1. Edit Your Text</div>
+
+    <div
+        id="textArea"
+        class="editor"
+        contenteditable="true"
+        role="textbox"
+        aria-label="Editable text area"
+        aria-multiline="true"
+        spellcheck="true"
+    >Welcome to my JavaScript Text Editor! Click the buttons below to change my appearance. You can also edit this text directly.</div>
+
+    <div class="section-title">2. Change Text Color</div>
+
+    <div class="toolbar">
+        <button class="color-button" onclick="changeTextColor('#d92d20')">Red</button>
+        <button class="color-button green" onclick="changeTextColor('#039855')">Green</button>
+        <button class="color-button purple" onclick="changeTextColor('#7a35c1')">Purple</button>
+        <button class="color-button orange" onclick="changeTextColor('#dc6803')">Orange</button>
+        <button onclick="changeTextColor('#155eef')">Blue</button>
+        <button onclick="changeTextColor('#222222')">Black</button>
+    </div>
+
+    <div class="section-title">3. Change Font Size</div>
+
+    <div class="toolbar">
+        <button onclick="changeFontSize(2)">A+ Increase Size</button>
+        <button onclick="changeFontSize(-2)">A- Decrease Size</button>
+    </div>
+
+    <div class="section-title">4. Change Font Family</div>
+
+    <div class="toolbar">
+        <button onclick="changeFontFamily('Arial')">Arial</button>
+        <button onclick="changeFontFamily('Georgia')">Georgia</button>
+        <button onclick="changeFontFamily('Courier New')">Courier New</button>
+        <button onclick="changeFontFamily('Verdana')">Verdana</button>
+    </div>
+
+    <div class="section-title">5. Text Decoration</div>
+
+    <div class="toolbar">
+        <button onclick="toggleDecoration('underline')">Underline</button>
+        <button onclick="toggleDecoration('overline')">Overline</button>
+        <button onclick="toggleDecoration('line-through')">Line Through</button>
+        <button onclick="clearDecorations()">Remove Decorations</button>
+    </div>
+
+    <div class="section-title">6. Bold and Italic</div>
+
+    <div class="toolbar">
+        <button onclick="toggleBold()">Bold (B)</button>
+        <button onclick="toggleItalic()">Italic (I)</button>
+    </div>
+
+    <div class="section-title">7. Text Alignment</div>
+
+    <div class="toolbar">
+        <button onclick="changeAlignment('left')">Left</button>
+        <button onclick="changeAlignment('center')">Center</button>
+        <button onclick="changeAlignment('right')">Right</button>
+        <button onclick="changeAlignment('justify')">Justify</button>
+    </div>
+
+    <div class="section-title">8. Uppercase and Lowercase</div>
+
+    <div class="toolbar">
+        <button onclick="changeCase('upper')">UPPERCASE</button>
+        <button onclick="changeCase('lower')">lowercase</button>
+    </div>
+
+    <div class="section-title">9. Change Background Color</div>
+
+    <div class="toolbar">
+        <button onclick="changeBackground('#fff2cc')">Light Yellow</button>
+        <button onclick="changeBackground('#d1fadf')">Light Green</button>
+        <button onclick="changeBackground('#dbeafe')">Light Blue</button>
+        <button onclick="changeBackground('#fce7f3')">Pink</button>
+        <button onclick="changeBackground('#ffffff')">White</button>
+    </div>
+
+    <div class="section-title">10. Dark and Light Mode</div>
+
+    <div class="toolbar">
+        <button onclick="toggleMode()">Toggle Dark / Light Mode</button>
+    </div>
+
+    <div class="section-title">11. Reset Editor</div>
+
+    <div class="toolbar">
+        <button class="reset" onclick="resetEditor()">Reset All Settings</button>
+    </div>
+
+    <p id="status" class="status" aria-live="polite">
+        Ready! Click any button to customize your text.
+    </p>
+
+</div>
+
+<script>
+    // Get the editable text area from the DOM.
+    const textArea = document.getElementById("textArea");
+    const status = document.getElementById("status");
+
+    // Display a message after each action.
+    function showStatus(message) {
+        status.textContent = message;
+    }
+
+    // 1. Change text color.
+    function changeTextColor(color) {
+        textArea.style.color = color;
+        showStatus("Text color changed successfully.");
+    }
+
+    // 2. Increase or decrease font size.
+    function changeFontSize(amount) {
+        let currentSize = parseFloat(
+            getComputedStyle(textArea).fontSize
+        );
+
+        let newSize = currentSize + amount;
+
+        // Keep the font size within reasonable limits.
+        newSize = Math.max(10, Math.min(60, newSize));
+
+        textArea.style.fontSize = newSize + "px";
+        showStatus("Font size: " + newSize + "px");
+    }
+
+    // 3. Change font family.
+    function changeFontFamily(font) {
+        textArea.style.fontFamily = font;
+        showStatus("Font family changed to " + font + ".");
+    }
+
+    // 4. Toggle text decorations independently.
+    function toggleDecoration(decoration) {
+        let decorations = new Set(
+            getComputedStyle(textArea)
+                .textDecorationLine
+                .split(/\s+/)
+        );
+
+        // Remove a decoration if it is already active.
+        // Otherwise, add it.
+        if (decorations.has(decoration)) {
+            decorations.delete(decoration);
+        } else {
+            decorations.add(decoration);
+        }
+
+        decorations.delete("none");
+
+        textArea.style.textDecorationLine =
+            decorations.size > 0
+                ? Array.from(decorations).join(" ")
+                : "none";
+
+        showStatus(decoration + " decoration toggled.");
+    }
+
+    function clearDecorations() {
+        textArea.style.textDecorationLine = "none";
+        showStatus("All text decorations removed.");
+    }
+
+    // 5. Toggle bold text.
+    function toggleBold() {
+        const currentWeight =
+            getComputedStyle(textArea).fontWeight;
+
+        const isBold =
+            currentWeight === "bold" ||
+            parseInt(currentWeight, 10) >= 600;
+
+        textArea.style.fontWeight = isBold ? "normal" : "bold";
+
+        showStatus("Bold formatting toggled.");
+    }
+
+    // 6. Toggle italic text.
+    function toggleItalic() {
+        const currentStyle =
+            getComputedStyle(textArea).fontStyle;
+
+        textArea.style.fontStyle =
+            currentStyle === "italic" ? "normal" : "italic";
+
+        showStatus("Italic formatting toggled.");
+    }
+
+    // 7. Align text.
+    function changeAlignment(alignment) {
+        textArea.style.textAlign = alignment;
+        showStatus("Text aligned to " + alignment + ".");
+    }
+
+    // 8. Convert text to uppercase or lowercase.
+    function changeCase(type) {
+        if (type === "upper") {
+            textArea.textContent =
+                textArea.textContent.toUpperCase();
+            showStatus("Text converted to uppercase.");
+        } else {
+            textArea.textContent =
+                textArea.textContent.toLowerCase();
+            showStatus("Text converted to lowercase.");
+        }
+    }
+
+    // 9. Change the text area's background color.
+    function changeBackground(color) {
+        textArea.style.backgroundColor = color;
+        showStatus("Text area background color changed.");
+    }
+
+    // 10. Toggle dark and light modes.
+    function toggleMode() {
+        document.body.classList.toggle("dark-mode");
+
+        const isDark =
+            document.body.classList.contains("dark-mode");
+
+        showStatus(
+            isDark ? "Dark mode enabled." : "Light mode enabled."
+        );
+    }
+
+    // 11. Reset the editor to its original settings.
+    function resetEditor() {
+        textArea.textContent =
+            "Welcome to my JavaScript Text Editor! Click the buttons below to change my appearance. You can also edit this text directly.";
+
+        textArea.removeAttribute("style");
+
+        document.body.classList.remove("dark-mode");
+
+        showStatus("Editor reset successfully.");
+    }
+</script>
+
+</body>
+</html>
